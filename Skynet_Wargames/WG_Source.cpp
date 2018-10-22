@@ -21,122 +21,158 @@ int main()
 
 	srand(static_cast<unsigned int>(time(0)));  //Seed the Random Number Generator.
 
-	int enemyLocation = rand() % 64 + 1; //Random number between 1 and 64.
-	int gridMaxAiOne = 64;
-	int gridMaxAiTwo = 64;
-	int gridMaxHuman = 64;
-	int gridMinAiOne = 1;
-	int gridMinAiTwo = 1;
-	int gridMinHuman = 1;
-	int predictionsAiOne = 1;
-	int predictionsAiTwo = 1;
-	int predictionsHuman = 1;
-	int aiOneGuess = rand() % 64 + 1; //Random number between 1 and 64.
-	//int aiTwoGuess = rand() % 64 + 1; //Random number between 1 and 64.
-	int humanGuess;
-	bool aiFoundEnemy = false;
-	bool playerFoundEnemy = false;
+	int enemyLocation = rand() % 64 + 1; //Generates Random number between 1-64 and places enemy there.
 
-	cout << "\n\t\t\t\t\t Welcome to Skynet, Captain.\n\n";
-	cout << "Today, you will be witnessing our newest A.I UAV. The 'HK-Aerial'.\n\n";
-	cout << "HK-Aerial Software Initalizing...\n\n";
-	cout << "Captain, our Intelligence software stragetically places an enemy randomly within an 8x8 Grid.\nAllowing 1 of 64 random locations to be selected within the grid\n";
-	cout << "HK-Aerial, automatically hunts down and tracks the enemy in the correct grid sector within a matter of seconds.\n\n";
+	int gridMax = 64;  //Max number Grid can be
+	int gridMin = 1;   //Min number Grid can be
+
+	int humanPredictions = 1;     //Number of predictions. Start at 1
+	int binaryAIPredictions = 1;  //Number of predictions. Start at 1
+	int randomAIPredictions = 1;  //Number of predictions. Start at 1
+	int linerAIPredictions = 1;   //Number of predictions. Start at 1
+
+	int humanGuess;											 //Will ask Human for input and guess a number.
+	int binaryAIGuess = ((gridMax - gridMin) / 2) + gridMin; //Generates a number between min and max. 
+	int linearAIGuess = 1;									 //Begin linear Guess at 1. Guess will be incremented at Function.
+
+	bool humanFoundEnemy = false;	  //Bool to determine if Human has found the enemy.
+	bool binaryAIFoundEnemy = false;  //Bool to determine if the BinaryAI found the enemy.
+	bool randomAIFoundEnemy = false;  //Bool to determine if the RandomAI found the enemy.
+	bool linearAIFoundEnemy = false;  //Bool to determine if the LinearAI found the enemy.
+
+	bool playAgain = false; //Bool to determine if Human would like to play again.
+	char yesOrNo;  //Setting a Char to YesOrNo for input.
 
 
-	//Create the search loop (do) function.
 	do
 	{
-		cout << "\nHuman...Guess the enemy location between Grid 1 - 64: ";
-		cin >> humanGuess;
-		cout << "\nHuman, your guess was: " << humanGuess  << "\n";
-		cout << "\Computer One, your guess was: " << aiOneGuess << "\n";
-		//cout << "\nComputer Two, your guess was: " << aiTwoGuess << "\n\n";
 
+		//****************************************************************-CREATE INTERESTING NARRATIVE-****************************************************************
+		//todo: Reword the narrative.
+		cout << "\n\t\t\t\t\t Welcome to Skynet, Captain.\n\n";
+		cout << "Today, you will be witnessing our newest A.I UAV. The 'HK-Aerial'.\n\n";
+		cout << "HK-Aerial Software Initalizing...\n\n";
+		cout << "Captain, our Intelligence software stragetically places an enemy randomly within an 8x8 Grid.\nAllowing 1 of 64 random locations to be selected within the grid\n";
+		cout << "HK-Aerial, automatically hunts down and tracks the enemy in the correct grid sector within a matter of seconds.\n\n";
 
-		if (aiOneGuess > enemyLocation)
+		//****************************************************************-CREATE HUMAN INTERACTION-********************************************************************
+		do
 		{
-			cout << "\nComputer One, The enemy location is not in Grid # " << aiOneGuess << " guess was to high.";
-			gridMaxAiOne = aiOneGuess;
-			aiOneGuess = ((gridMaxAiOne - gridMinAiOne) / 2) + gridMinAiOne;
-			predictionsAiOne++;
-		}
+			cout << "\nHuman...Guess the enemy location between Grid 1 - 64: ";
+			cin >> humanGuess;
+			cout << "\nHuman, your guess was: " << humanGuess << "\n";
 
-		/*if (aiTwoGuess > enemyLocation)
+			//If Humans guess was too high...
+			if (humanGuess > enemyLocation)
+			{
+				cout << "\nHuman, The enemy location is not in Grid # " << humanGuess << " your guess was to high.\n\n";
+				gridMax = humanGuess;
+				humanPredictions++;
+			}
+
+			//If Humans guess was too low...
+			if (humanGuess < enemyLocation)
+			{
+				cout << "\nHuman, The enemy location is not in Grid # " << humanGuess << " your guess was to low.\n\n";
+				gridMin = humanGuess;
+				humanPredictions++;
+			}
+
+			//If Human guessed correctly...
+			else if (humanGuess == enemyLocation)
+			{
+				cout << "\nEnemy was located in Grid # " << enemyLocation << " Human, you guessed correctly.\n";
+				cout << "\nIt only took you controlling the 'HK-Aerial " << humanPredictions << " search attempts.\n\n";
+				humanFoundEnemy = true;
+			}
+
+		} while (!humanFoundEnemy);
+
+		system("pause");
+
+		//****************************************************************-CREATE BINARY_AI INTERACTION-*****************************************************************
+		do
 		{
-			cout << "\nComputer Two, The enemy location is not in Grid # " << aiTwoGuess << " your guess was to high.\n\n";
-			gridMaxAiTwo = aiTwoGuess;
-			aiTwoGuess = ((gridMaxAiTwo - gridMinAiTwo) / 2) + gridMinAiTwo;
-			predictionsAiOne++;
-		}*/
+			//Repeat what the BinaryAI's guess was.
+			cout << "\BinaryAI, your guess was: " << binaryAIGuess << "\n";
 
-		if (humanGuess > enemyLocation)
+			//If BinaryAI's guess was higher than the Enemy Location...
+			if (binaryAIGuess > enemyLocation)
+			{
+				cout << "\nBinaryAI, The enemy location is not in Grid # " << binaryAIGuess << " guess was to high.";
+				gridMax = binaryAIGuess;
+				binaryAIGuess = ((gridMax - gridMin) / 2) + gridMin;
+				binaryAIPredictions++;
+			}
+
+			//If BinaryAI's guess was lower than the Enemy Location...
+			if (binaryAIGuess < enemyLocation)
+			{
+				cout << "\nBinaryAI, The enemy location is not in Grid # " << binaryAIGuess << " your guess was to low.";
+				gridMin = binaryAIGuess;
+				binaryAIGuess = ((gridMax - gridMin) / 2) + gridMin;
+				binaryAIPredictions++;
+			}
+
+			//If BinaryAI's guess was correct...
+			else if (binaryAIGuess == enemyLocation)
+			{
+				cout << "\nEnemy was located in Grid # " << enemyLocation << " BinaryAI guessed correctly.\n";
+				cout << "\nIt only took BinaryAI controlling the 'HK-Aerial " << binaryAIPredictions << " search attempts.\n\n";
+				binaryAIFoundEnemy = true;
+			}
+
+		} while (!binaryAIFoundEnemy);
+
+		system("pause");
+
+		//****************************************************************-CREATE RANDOM_AI INTERACTION-*****************************************************************
+		//todo: Make Random Enemy Guess. Set random enemy value and loop through new random number until it mataches enemy location.
+		do
 		{
-			cout << "\nHuman, The enemy location is not in Grid # " << humanGuess << " your guess was to high.\n\n";
-			gridMaxHuman = humanGuess;
-			predictionsHuman++;
-		}
+			int randomAIGuess = rand() % 64 + 1;  //Generates Random number between 1-64
 
-		if (aiOneGuess < enemyLocation)
-		{
-			cout << "\nComputer One, The enemy location is not in Grid # " << aiOneGuess << " your guess was to low.";
-			gridMinAiOne = aiOneGuess;
-			aiOneGuess = ((gridMaxAiOne - gridMinAiOne) / 2) + gridMinAiOne;
-			predictionsAiOne++;
-		}
+			cout << "\nRandomAI, your guess was: " << randomAIGuess << "\n\n";
 
-		/*else if (aiTwoGuess < enemyLocation)
-		{
-			cout << "\nComputer Two, The enemy location is not in Grid # " << aiTwoGuess << " your guess was to low.\n\n";
-			gridMinAiTwo = aiTwoGuess;
-			aiTwoGuess = ((gridMaxAiTwo - gridMinAiTwo) / 2) + gridMinAiTwo;
-			predictionsAiTwo++;
-		}*/
+			//If RandomAI guess was too high...
+			if (randomAIGuess > enemyLocation)
+			{			
+				cout << "\nRandomAI, The enemy location is not in Grid # " << randomAIGuess << " your guess was to high.\n\n";
+				//randomAIGuess;
+				binaryAIPredictions++;
+			}
 
-		if (humanGuess < enemyLocation)
-		{
-			cout << "\nHuman, The enemy location is not in Grid # " << humanGuess << " your guess was to low.\n\n";
-			gridMinHuman = humanGuess;
-			predictionsHuman++;
-		}
+			//If RandomAI guess was too low...
+			else if (randomAIGuess < enemyLocation)
+			{
+				cout << "\nComputer Two, The enemy location is not in Grid # " << randomAIGuess << " your guess was to low.\n\n";
+				//randomAIGuess;
+				randomAIPredictions++;
+			}
 
-		else if (aiOneGuess == enemyLocation)
-		{
-			cout << "\nEnemy was located in Grid # " << enemyLocation << " Computer One guessed correctly.\n";
-			cout << "\nIt only took aiOne controlling the 'HK-Aerial " << predictionsAiOne << " search attempts.\n\n";
-			aiFoundEnemy = true;
-		}
+			//If RandomAI guess was correct...
+			else if (randomAIGuess == enemyLocation)
+			{
+				cout << "\nEnemy was located in Grid # " << enemyLocation << " RandomAI guessed correctly.\n";
+				cout << "\nIt only took RandomAI controlling the 'HK-Aerial " << randomAIPredictions << " search attempts.\n\n";
+				randomAIFoundEnemy = true;
+			}
 
-		/*else if (aiTwoGuess == enemyLocation)
-		{
-			cout << "\nEnemy was located in Grid # " << enemyLocation << " Computer Two guessed correctly.\n";
-			cout << "\nIt only took aiTwo controlling the 'HK-Aerial " << predictionsAiTwo << " search attempts.\n\n";
-			enemyFound = true;
-		}*/
+		} while (!randomAIFoundEnemy);
 
-		else if (humanGuess == enemyLocation)
-		{
-			cout << "\nEnemy was located in Grid # " << enemyLocation << " Human, you guessed correctly.\n";
-			cout << "\nIt only took you controlling the 'HK-Aerial " << predictionsHuman << " search attempts.\n\n";
-			playerFoundEnemy = true;
-		}
+		system("pause");
 
-	} while (enemyLocation != aiOneGuess && humanGuess);
+		//****************************************************************-CREATE LINEAR_AI INTERACTION-*****************************************************************
+		//todo: Make Linear Enemy guess. Start enemy guess at 1 and increase by 1 per loop.
 
-	if (aiFoundEnemy)
-	{
-		cout << "\n\tThe AI found the enemy.";
-	}
-	if (playerFoundEnemy)
-	{
-		cout << "\n\tThe player found the enemy.";
-	}
+		//****************************************************************-CREATE INTERACTION SUMMARY-*******************************************************************
+		//todo: Create a summary of all searches and outcomes. 
 
-	if (playerFoundEnemy && aiFoundEnemy)
-	{
-		cout << "All parties found enemies." << endl;
-	}
-	
+		//****************************************************************-CREATE PLAY AGAIN INTERACTION-****************************************************************
+		//todo: Add play again functionality.
+
+	} while (!playAgain);
+
 
 	system("pause");
 
