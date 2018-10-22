@@ -29,7 +29,7 @@ int main()
 	int humanPredictions = 1;     //Number of predictions. Start at 1
 	int binaryAIPredictions = 1;  //Number of predictions. Start at 1
 	int randomAIPredictions = 1;  //Number of predictions. Start at 1
-	int linerAIPredictions = 1;   //Number of predictions. Start at 1
+	int linearAIPredictions = 1;   //Number of predictions. Start at 1
 
 	int humanGuess;											 //Will ask Human for input and guess a number.
 	int binaryAIGuess = ((gridMax - gridMin) / 2) + gridMin; //Generates a number between min and max. 
@@ -82,7 +82,6 @@ int main()
 			else if (humanGuess == enemyLocation)
 			{
 				cout << "\nEnemy was located in Grid # " << enemyLocation << " Human, you guessed correctly.\n";
-				cout << "\nIt only took you controlling the 'HK-Aerial " << humanPredictions << " search attempts.\n\n";
 				humanFoundEnemy = true;
 			}
 
@@ -118,7 +117,6 @@ int main()
 			else if (binaryAIGuess == enemyLocation)
 			{
 				cout << "\nEnemy was located in Grid # " << enemyLocation << " BinaryAI guessed correctly.\n";
-				cout << "\nIt only took BinaryAI controlling the 'HK-Aerial " << binaryAIPredictions << " search attempts.\n\n";
 				binaryAIFoundEnemy = true;
 			}
 
@@ -130,7 +128,7 @@ int main()
 		//todo: Make Random Enemy Guess. Set random enemy value and loop through new random number until it mataches enemy location.
 		do
 		{
-			int randomAIGuess = rand() % 64 + 1;  //Generates Random number between 1-64
+			int randomAIGuess = rand() % 64 + 1;  //Generates Random number between 1-64 to be initialized every cycle of Do-Loop until matching enemy location.
 
 			cout << "\nRandomAI, your guess was: " << randomAIGuess << "\n\n";
 
@@ -138,15 +136,13 @@ int main()
 			if (randomAIGuess > enemyLocation)
 			{			
 				cout << "\nRandomAI, The enemy location is not in Grid # " << randomAIGuess << " your guess was to high.\n\n";
-				//randomAIGuess;
-				binaryAIPredictions++;
+				randomAIPredictions++;
 			}
 
 			//If RandomAI guess was too low...
 			else if (randomAIGuess < enemyLocation)
 			{
 				cout << "\nComputer Two, The enemy location is not in Grid # " << randomAIGuess << " your guess was to low.\n\n";
-				//randomAIGuess;
 				randomAIPredictions++;
 			}
 
@@ -154,7 +150,6 @@ int main()
 			else if (randomAIGuess == enemyLocation)
 			{
 				cout << "\nEnemy was located in Grid # " << enemyLocation << " RandomAI guessed correctly.\n";
-				cout << "\nIt only took RandomAI controlling the 'HK-Aerial " << randomAIPredictions << " search attempts.\n\n";
 				randomAIFoundEnemy = true;
 			}
 
@@ -164,12 +159,47 @@ int main()
 
 		//****************************************************************-CREATE LINEAR_AI INTERACTION-*****************************************************************
 		//todo: Make Linear Enemy guess. Start enemy guess at 1 and increase by 1 per loop.
+		do
+		{
+			
+			cout << "LinearAI: Your guess starts at " << linearAIGuess << " and increases by 1 each cycle until you are correct." << endl;
+			linearAIGuess++;
 
-		//****************************************************************-CREATE INTERACTION SUMMARY-*******************************************************************
-		//todo: Create a summary of all searches and outcomes. 
+			//Only need to do LESS than enemy location since the guess starts at 1 and increments up. Guess will never go higher than the enmy location.
+			if (linearAIGuess < enemyLocation)
+			{
+				cout << "You guessed " << linearAIGuess << ". That is too low. Keep trying. You'll get there eventually." << endl;
+				linearAIPredictions++;
+			}
+
+			//If Guess is correct...
+			else if (linearAIGuess = enemyLocation)
+			{
+				cout << "Correct! The enemy is located in grid # " << enemyLocation << "! Nice job...Took you long enough..." << endl;
+				linearAIFoundEnemy = true;
+			}
+		} while (!linearAIFoundEnemy);
+
+		system("pause");
+		//****************************************************************-CREATE INTERACTION SUMMARY-******************************************************************* 
+		cout << "\nIt only took you..the Human controlling the 'HK-Aerial' " << humanPredictions << " search attempts.\n";
+		cout << "\nIt only took BinaryAI controlling the 'HK-Aerial' " << binaryAIPredictions << " search attempts.\n";
+		cout << "\nIt only took RandomAI controlling the 'HK-Aerial' " << randomAIPredictions << " search attempts.\n";
+		cout << "\nIt only took LinearAI controlling the 'HK-Aerial' " << linearAIPredictions << " search attempts." << endl;
 
 		//****************************************************************-CREATE PLAY AGAIN INTERACTION-****************************************************************
 		//todo: Add play again functionality.
+		/*if (yesOrNo == 'Y')
+		{
+			cout << "Will you play again? 'Y' or 'N' " << endl;
+			cin >> yesOrNo;
+			playAgain = true;
+		}
+		else 
+		{
+			cout << "Twas fun while it lasted...Good Riddance..." << endl;
+			playAgain = false;
+		}*/
 
 	} while (!playAgain);
 
