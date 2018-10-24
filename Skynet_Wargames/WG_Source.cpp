@@ -2,7 +2,7 @@
 /*
 Name: Hunter Derrick
 Professor: Tony Hinton
-Wargames Start: 10/20/18  -- Wargames Finish: 10/20/2018
+Wargames Start: 10/20/18  -- Wargames Finish: 10/23/2018
 Project Name: Skynet HK-Aerial - Wargames
 */
 
@@ -47,11 +47,34 @@ int main()
 	do
 	{
 
+
+		srand(static_cast<unsigned int>(time(0)));  //Seed the Random Number Generator.
+
+		int enemyLocation = rand() % 64 + 1; //Generates Random number between 1-64 and places enemy there.
+
+		int gridMax = 64;  //Max number Grid can be
+		int gridMin = 1;   //Min number Grid can be
+
+		int humanPredictions = 1;     //Number of predictions. Start at 1
+		int binaryAIPredictions = 1;  //Number of predictions. Start at 1
+		int randomAIPredictions = 1;  //Number of predictions. Start at 1
+		int linearAIPredictions = 1;   //Number of predictions. Start at 1
+
+		int humanGuess;											 //Will ask Human for input and guess a number.
+		int binaryAIGuess = ((gridMax - gridMin) / 2) + gridMin; //Generates a number between min and max. 
+		int linearAIGuess = 1;									 //Begin linear Guess at 1. Guess will be incremented at Function.
+
+		bool humanFoundEnemy = false;	  //Bool to determine if Human has found the enemy.
+		bool binaryAIFoundEnemy = false;  //Bool to determine if the BinaryAI found the enemy.
+		bool randomAIFoundEnemy = false;  //Bool to determine if the RandomAI found the enemy.
+		bool linearAIFoundEnemy = false;  //Bool to determine if the LinearAI found the enemy.
+
+
+
 		//****************************************************************-CREATE INTERESTING NARRATIVE-****************************************************************
 		//todo: Reword the narrative.
 		cout << "\n\t\t\t\t\t Welcome to Skynet, Captain.\n\n";
-		cout << "Today, you will be witnessing our newest A.I UAV. The 'HK-Aerial'.\n\n";
-		cout << "HK-Aerial Software Initalizing...\n\n";
+		cout << "Today, you will be witnessing and challenging our newest A.I UAV's. The 'HK-Aerial'.\n\n";
 		cout << "Captain, our Intelligence software stragetically places an enemy randomly within an 8x8 Grid.\nAllowing 1 of 64 random locations to be selected within the grid\n";
 		cout << "HK-Aerial, automatically hunts down and tracks the enemy in the correct grid sector within a matter of seconds.\n\n";
 
@@ -182,28 +205,30 @@ int main()
 
 		system("pause");
 		//****************************************************************-CREATE INTERACTION SUMMARY-******************************************************************* 
-		cout << "\nIt only took you..the Human controlling the 'HK-Aerial' " << humanPredictions << " search attempts.\n";
+		cout << "\nIt took you controlling the 'HK-Aerial' " << humanPredictions << " search attempts.\n";
 		cout << "\nIt only took BinaryAI controlling the 'HK-Aerial' " << binaryAIPredictions << " search attempts.\n";
 		cout << "\nIt only took RandomAI controlling the 'HK-Aerial' " << randomAIPredictions << " search attempts.\n";
 		cout << "\nIt only took LinearAI controlling the 'HK-Aerial' " << linearAIPredictions << " search attempts." << endl;
 
 		//****************************************************************-CREATE PLAY AGAIN INTERACTION-****************************************************************
 		//todo: Add play again functionality.
-		/*if (yesOrNo == 'Y')
+		
+		system("pause");
+
+		cout << "\nDo you wish to try again? (Y or N)" << endl;
+		cin >> yesOrNo;
+		if (yesOrNo == 'y' || yesOrNo == 'Y')
 		{
-			cout << "Will you play again? 'Y' or 'N' " << endl;
-			cin >> yesOrNo;
 			playAgain = true;
 		}
-		else 
+		else
 		{
-			cout << "Twas fun while it lasted...Good Riddance..." << endl;
 			playAgain = false;
-		}*/
+		}
 
-	} while (!playAgain);
+	} while (playAgain);
 
-
+	cout << "\nThanks for playing!" << endl;
 	system("pause");
 
 	return(0);
